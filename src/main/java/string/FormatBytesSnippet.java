@@ -23,6 +23,8 @@
  */
 
 package string;
+ 
+import java.util.Locale;
 
 /**
  * FormatBytesSnippet.
@@ -44,13 +46,13 @@ public class FormatBytesSnippet {
     if ((bytes >= 0) && (bytes < kb)) {
       return bytes + " B";
     } else if ((bytes >= kb) && (bytes < mb)) {
-      return String.format("%.2f KB", bytes / kb);
+      return String.format(Locale.ENGLISH, "%.2f KB", bytes / kb);
     } else if ((bytes >= mb) && (bytes < gb)) {
-      return String.format("%.2f MB", bytes / mb);
+      return String.format(Locale.ENGLISH, "%.2f MB", bytes / mb);
     } else if ((bytes >= gb) && (bytes < tb)) {
-      return String.format("%.2f GB", bytes / gb);
+      return String.format(Locale.ENGLISH, "%.2f GB", bytes / gb);
     } else if (bytes >= tb) {
-      return String.format("%.2f TB", bytes / tb);
+      return String.format(Locale.ENGLISH, "%.2f TB", bytes / tb);
     } else {
       return "Invalid Input";
     }
