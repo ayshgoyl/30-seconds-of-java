@@ -1,20 +1,17 @@
-name: Java PR Builder with Gradle and SonarCloud
+name: Java PR Builder with Gradle
 
 on:
-  pull_request_target:
+  pull_request:
     branches: [ master ]
-    types: [ opened, reopened, synchronize ]
 
 jobs:
-  build-and-analyze:
-    name: Build and SonarCloud Analysis
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR source code
+      - name: Checkout source code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -29,15 +26,5 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      - name: Build and analyze with Gradle and SonarCloud
-        run: |
-          ./gradlew build sonarqube --no-daemon \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=iluwatar \
-            -Dsonar.projectKey=iluwatar_30-seconds-of-java \
-            -Dsonar.pullrequest.branch=${{ github.head_ref }} \
-            -Dsonar.pullrequest.base=${{ github.base_ref }} \
-            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
